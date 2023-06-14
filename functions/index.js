@@ -13,15 +13,18 @@ app.post('/', async (request, response) => {
     const bodyText = request.body
     let snapshot = await admin.database().ref('/mock-api').push(bodyText);
 
-    response.send(snapshot.id)
+    response.send(snapshot.key)
 });
 
 app.get('/', async (request, response) => {
-    const bodyText = request.query.toString()
-    console.log(bodyText)
-    let snapshot = await admin.database().ref('/mock-api/'+bodyText).get();
-    let jsonResponse = JSON.parse(snapshot.data)
-    response.send(jsonResponse)
+    const mockId = request.query.toString()
+    console.log(mockId)
+    if (mockId) {
+        let snapshot = await admin.database().ref('/mock-api/'+mockId).get();
+        response.send(snapshot.data)
+    } else {
+        response.send({})
+    }
 });
 
 exports.mock = functions.https.onRequest(app)
