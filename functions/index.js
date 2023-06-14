@@ -12,15 +12,15 @@ app.use(cors({ origin: true }));
 app.post('/', async (request, response) => {
     const bodyText = request.body
     let snapshot = await admin.database().ref('/mock-api').push(bodyText);
-
-    response.send(snapshot.key())
+    let key = await snapshot.key
+    response.send(key)
 });
 
 app.get('/', async (request, response) => {
     const mockId = request.query.toString()
     console.log(mockId)
     if (mockId) {
-        admin.database().ref('/mock-api/').once(mockId, (data) => {
+        admin.database().ref('/mock-api/'+mockId).once('value', (data) => {
             response.send(data)
         })
     } else {
