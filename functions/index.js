@@ -9,14 +9,14 @@ const app = express();
 admin.initializeApp();
 app.use(cors({ origin: true }));
 
-app.post('/mock', async (request, response) => {
+app.post('/', async (request, response) => {
     const bodyText = request.body
     let snapshot = await admin.database().ref('/mock-api').push(bodyText);
 
     response.send(snapshot.id)
 });
 
-app.get('/mock', async (request, response) => {
+app.get('/', async (request, response) => {
     const bodyText = request.query.toString()
     console.log(bodyText)
     let snapshot = await admin.database().ref('/mock-api/'+bodyText).get();
