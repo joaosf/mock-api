@@ -17,12 +17,12 @@ app.post('/', async (request, response) => {
 });
 
 app.get('/', async (request, response) => {
-    const mockId = request.query.toString()
+    const mockId = request.query.id
     console.log(mockId)
     if (mockId) {
         admin.database().ref('/mock-api/'+mockId).once('value', (data) => {
             response.send(data)
-        })
+        }).catch(() => response.send({}))
     } else {
         response.send({})
     }
