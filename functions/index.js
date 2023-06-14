@@ -28,4 +28,4 @@ app.get('/', async (request, response) => {
     }
 });
 
-exports.mock = functions.https.onRequest(app)
+exports.mock = functions.runWith({enforceAppCheck: true}).https.onRequest(app)
