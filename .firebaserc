@@ -1,8 +1,8 @@
 {
   "projects": {
-    "psnoteanalysis": "psnoteanalysis"
+    "mock-api": "mock-api"
   },
   "targets": {},
   "etags": {},
-  "databaseURL": "https://psnoteanalysis-default-rtdb.firebaseio.com/"
+  "databaseURL": "https://mock-api-cc43f-default-rtdb.firebaseio.com/"
 }
