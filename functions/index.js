@@ -30,11 +30,11 @@ app.get('/', async (request, response) => {
     }
 });
 
-app.get('/qrcode/', async (request, response) => {
-    const mockId = request.query.id
+app.get('/qrcode-generator/', async (request, response) => {
+    const textToGenerate = request.query.text
 
-    if (mockId) {
-        QRCode.toString(mockId, {
+    if (textToGenerate) {
+        QRCode.toString(textToGenerate, {
             errorCorrectionLevel: 'H',
             type: 'svg'
         }, function(err, data) {
@@ -43,7 +43,7 @@ app.get('/qrcode/', async (request, response) => {
             response.send(data);
         })
     } else {
-        response.send({})
+        response.send()
     }
 });
 
