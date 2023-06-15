@@ -34,7 +34,7 @@ app.get('/qrcode/', async (request, response) => {
     const mockId = request.query.id
 
     if (mockId) {
-        QRCode.toCanvas('text', { errorCorrectionLevel: 'H' }, function (err, canvas) {
+        QRCode.toCanvas(mockId, { errorCorrectionLevel: 'H' }, function (err, canvas) {
             if (err) throw response.send()
 
             response.send(canvas);
