@@ -5,6 +5,8 @@ const admin = require('firebase-admin');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const QRCode = require('qrcode')
+
 
 admin.initializeApp();
 app.use(cors({ origin: true }));
@@ -23,6 +25,20 @@ app.get('/', async (request, response) => {
         admin.database().ref('/mock-api/'+mockId).once('value', (data) => {
             response.send(data)
         }).catch(() => response.send({}))
+    } else {
+        response.send({})
+    }
+});
+
+app.get('/qrcode/', async (request, response) => {
+    const mockId = request.query.id
+
+    if (mockId) {
+        QRCode.toCanvas('text', { errorCorrectionLevel: 'H' }, function (err, canvas) {
+            if (err) throw response.send()
+
+            response.send(canvas);
+        })
     } else {
         response.send({})
     }
