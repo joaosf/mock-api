@@ -36,7 +36,7 @@ app.get('/qrcode-generator/', async (request, response) => {
     if (textToGenerate) {
         QRCode.toString(textToGenerate, {
             errorCorrectionLevel: 'H',
-            type: 'png'
+            type: 'svg'
         }, function(err, data) {
             if (err) throw response.send(err)
 
