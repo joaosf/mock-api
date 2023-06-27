@@ -18,6 +18,19 @@ app.post('/', async (request, response) => {
     response.send(key)
 });
 
+app.post('/:tagId', async (request, response) => {
+    const tagId = request.params.tagId
+    if (tagId) {
+        const bodyText = request.body
+        let snapshot = await admin.database().ref('/mock-api/'+tagId).push(bodyText);
+        let key = await snapshot.key
+        response.send(key)
+    } else {
+        response.status(404)
+        response.send()
+    }
+});
+
 app.get('/', async (request, response) => {
     const mockId = request.query.id
 
