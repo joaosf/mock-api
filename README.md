@@ -8,7 +8,7 @@ Some utils commands:
 - firebase deploy
 - firebase emulators:start (locally run)
 
-BUT, everything what you need is done auto, build, deploy and other things.
+But, everything what you need is done auto, build, deploy and other things.
 
 # API Documentation
 
