@@ -35,7 +35,7 @@ app.post('/set/:tagId', async (request, response) => {
     const tagId = request.params.tagId
     if (tagId) {
         const bodyText = request.body
-        let snapshot = await admin.database().ref('/mock-api/'+tagId).set(bodyText);
+        let snapshot = await admin.database().ref('/mock-api/setByUser/'+tagId).set(bodyText);
         let key = await snapshot.key
         response.send(key)
     } else {
