@@ -88,8 +88,8 @@ app.get('/qrcode-generator/', async (request, response) => {
 
 
 app.post('/imageToText/convert/', async (request, response) => {
-    const bodyText = request.body
-    response.send(bodyText)
+    const bodyText = request.body.imageBase64
+    // response.send(bodyText)
     if (bodyText) {
         ReadText(bodyText).then(text => {
             response.send(text)
