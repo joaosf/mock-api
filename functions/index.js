@@ -87,7 +87,7 @@ app.get('/qrcode-generator/', async (request, response) => {
 
 
 
-app.post('/imageToText', async (request, response) => {
+app.post('/imageToText/', async (request, response) => {
     const bodyText = request.body
     response.send(bodyText)
     if (bodyText) {
