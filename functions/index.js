@@ -6,7 +6,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const QRCode = require('qrcode')
-const ReadText = require('text-from-image')
 
 admin.initializeApp();
 app.use(cors({ origin: true }));
@@ -82,20 +81,6 @@ app.get('/qrcode-generator/', async (request, response) => {
         })
     } else {
         response.send()
-    }
-});
-
-
-
-app.post('/imageToText/convert/', async (request, response) => {
-    const bodyText = request.body.imageBase64
-    // response.send(bodyText)
-    if (bodyText) {
-        ReadText(bodyText).then(text => {
-            response.send(text)
-        }).catch(err => {
-            response.send(err)
-        })
     }
 });
 
