@@ -7,6 +7,7 @@ Some utils commands:
 - cd functions; npm install; cd -
 - firebase deploy
 - firebase emulators:start (locally run)
+- firebase login:ci (generate FIREBASE_TOKEN to put on github secrets)
 
 But, everything what you need is done auto, build, deploy and other things.
 
