@@ -85,26 +85,17 @@ app.get('/qrcode-generator/', async (request, response) => {
     }
 });
 
-function streamToString (stream) {
-    const chunks = [];
-    return new Promise((resolve, reject) => {
-        stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
-        stream.on('error', (err) => reject(err));
-        stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-    })
-}
-
 app.get('/get-json-extractor/', async (request, response) => {
     const urlToJSON = request.query.url
     const fieldToMap = request.query.field
-    let responseData = []
+
     if (urlToJSON) {
-        fetch(urlToJSON)
+        fetch(urlToJSON, { headers: { 'accept': 'application/json; charset=utf8;' } })
             .then(async (responseFetch) => {
-                const bodyText = await streamToString(responseFetch.body)
-                let jsonArray = JSON.parse(bodyText)
-                responseData = jsonArray.map(item => item[fieldToMap])
-                return response.send(responseData);
+                let jsonArray = await responseFetch.json()
+                jsonArray = jsonArray.map(item => item[fieldToMap])
+
+                response.send(jsonArray);
             })
             .catch((error) => response.send(error));
     } else {
