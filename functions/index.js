@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const QRCode = require('qrcode')
+const {error} = require("firebase-functions/logger");
 
 admin.initializeApp();
 app.use(cors({ origin: true }));
@@ -80,6 +81,25 @@ app.get('/qrcode-generator/', async (request, response) => {
             response.send(data);
         })
     } else {
+        response.send()
+    }
+});
+
+app.get('/get-json-extractor/', async (request, response) => {
+    const urlToJSON = request.query.url
+    const fieldToFilter = request.query.field
+    let responseData = []
+
+    if (urlToJSON) {
+        fetch(urlToJSON)
+            .then((responseFetch) => {
+                let jsonResult = JSON.parse(responseFetch);
+                jsonResult.foreach(item => responseData.push(item[fieldToFilter]));
+                return response.send(responseData);
+            })
+            .catch((error) => response.send(error));
+    } else {
+        response.status(404)
         response.send()
     }
 });
