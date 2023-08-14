@@ -6,6 +6,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const QRCode = require('qrcode')
+const fetch = require("node-fetch");
 
 admin.initializeApp();
 app.use(cors({ origin: true }));
@@ -55,17 +56,17 @@ app.get('/', async (request, response) => {
     }
 });
 
-app.get('/:tagId', async (request, response) => {
-    const tagId = request.params.tagId
-
-    if (tagId) {
-        admin.database().ref('/mock-api/'+tagId).once('value', (data) => {
-            response.send(data)
-        }).catch(() => response.send({}))
-    } else {
-        response.send({})
-    }
-});
+// app.get('/:tagId', async (request, response) => {
+//     const tagId = request.params.tagId
+//
+//     if (tagId) {
+//         admin.database().ref('/mock-api/'+tagId).once('value', (data) => {
+//             response.send(data)
+//         }).catch(() => response.send({}))
+//     } else {
+//         response.send({})
+//     }
+// });
 
 app.get('/qrcode-generator/', async (request, response) => {
     const textToGenerate = request.query.text
@@ -84,18 +85,25 @@ app.get('/qrcode-generator/', async (request, response) => {
     }
 });
 
+function streamToString (stream) {
+    const chunks = [];
+    return new Promise((resolve, reject) => {
+        stream.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+        stream.on('error', (err) => reject(err));
+        stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    })
+}
+
 app.get('/get-json-extractor/', async (request, response) => {
     const urlToJSON = request.query.url
-    const fieldToFilter = request.query.field
+    const fieldToMap = request.query.field
     let responseData = []
-
     if (urlToJSON) {
         fetch(urlToJSON)
-            .then((responseFetch) => {
-                let jsonArray = JSON.parse(responseFetch);
-                for (let item in jsonArray) {
-                    responseData.push(item[fieldToFilter])
-                }
+            .then(async (responseFetch) => {
+                const bodyText = await streamToString(responseFetch.body)
+                let jsonArray = JSON.parse(bodyText)
+                responseData = jsonArray.map(item => item[fieldToMap])
                 return response.send(responseData);
             })
             .catch((error) => response.send(error));
