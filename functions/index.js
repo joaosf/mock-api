@@ -6,7 +6,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const QRCode = require('qrcode')
-const {error} = require("firebase-functions/logger");
 
 admin.initializeApp();
 app.use(cors({ origin: true }));
@@ -94,7 +93,7 @@ app.get('/get-json-extractor/', async (request, response) => {
         fetch(urlToJSON)
             .then((responseFetch) => {
                 let jsonResult = JSON.parse(responseFetch);
-                jsonResult.foreach(item => responseData.push(item[fieldToFilter]));
+                jsonResult.foreach(item => responseData.push(JSON.parse(item)[fieldToFilter]));
                 return response.send(responseData);
             })
             .catch((error) => response.send(error));
