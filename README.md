@@ -24,8 +24,8 @@ But, everything what you need is done auto, build, deploy and other things.
 ### GET
 - `/mock?id=$var`
   - Response: Collection with id=$var
-- `/mock/:tagId`
-  - Alterantive to API default 
-  - Response: Collection with id=$tagId
 - `/mock/qrcode-generator?text=$var`
   - Response: Base64/png from QRCode with content of "$var"
+- `/mock/get-json-extractor?url=$url_from_json&field=$field_to_extract`
+  - Pattern of $$field_to_extract: field.field.field... (example: items.cart.value)
+  - Response: Collection with data list of your $field_to_extract

@@ -56,18 +56,6 @@ app.get('/', async (request, response) => {
     }
 });
 
-// app.get('/:tagId', async (request, response) => {
-//     const tagId = request.params.tagId
-//
-//     if (tagId) {
-//         admin.database().ref('/mock-api/'+tagId).once('value', (data) => {
-//             response.send(data)
-//         }).catch(() => response.send({}))
-//     } else {
-//         response.send({})
-//     }
-// });
-
 app.get('/qrcode-generator/', async (request, response) => {
     const textToGenerate = request.query.text
 
