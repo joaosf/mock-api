@@ -88,12 +88,25 @@ app.get('/qrcode-generator/', async (request, response) => {
 app.get('/get-json-extractor/', async (request, response) => {
     const urlToJSON = request.query.url
     const fieldToMap = request.query.field
+    const fieldList = fieldToMap.split('.')
 
     if (urlToJSON) {
         fetch(urlToJSON, { headers: { 'accept': 'application/json; charset=utf8;' } })
             .then(async (responseFetch) => {
                 let jsonArray = await responseFetch.json()
-                jsonArray = jsonArray.map(item => item[fieldToMap])
+                fieldList.forEach(field => {
+                    if (field !== fieldList[0]) {
+                        let items = []
+                        for (let i of jsonArray) {
+                            items.push(i[0])
+                        }
+                        jsonArray = items
+                    }
+                    jsonArray = jsonArray.map(item => item[field])
+                });
+                // console.log(jsonArray.reduce((res, item) => [...res, ...item], []))
+                // jsonArray = jsonArray.flat().map(item => item[fieldList]).join('')
+                // jsonArray = jsonArray.map(item => item[fieldList[0]])
 
                 response.send(jsonArray);
             })
