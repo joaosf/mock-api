@@ -92,8 +92,10 @@ app.get('/get-json-extractor/', async (request, response) => {
     if (urlToJSON) {
         fetch(urlToJSON)
             .then((responseFetch) => {
-                let jsonResult = JSON.parse(responseFetch);
-                jsonResult.foreach(item => responseData.push(JSON.parse(item)[fieldToFilter]));
+                let jsonArray = JSON.parse(responseFetch);
+                for (let item in jsonArray) {
+                    responseData.push(item[fieldToFilter])
+                }
                 return response.send(responseData);
             })
             .catch((error) => response.send(error));
