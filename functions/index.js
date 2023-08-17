@@ -107,10 +107,12 @@ app.post('/json-extractor/', async (request, response) => {
 function processJsonFields(jsonArray, fieldList) {
     try {
         fieldList.forEach(field => {
-            if (field !== fieldList[0]) {
+            if (JSON.stringify(jsonArray).startsWith('[[')) {
                 let items = []
                 for (let i of jsonArray) {
-                    items.push(i[0])
+                    for (let n in i) {
+                        items.push(i[n])
+                    }
                 }
                 jsonArray = items
             }
@@ -119,7 +121,7 @@ function processJsonFields(jsonArray, fieldList) {
         });
         return jsonArray;
     } catch (error) {
-        return { error }
+        throw error
     }
 
 }
