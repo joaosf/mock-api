@@ -109,15 +109,17 @@ function processJsonFields(jsonArray, fieldList) {
         fieldList.forEach(field => {
             if (JSON.stringify(jsonArray).startsWith('[[')) {
                 let items = []
-                for (let i of jsonArray) {
-                    for (let n in i) {
-                        items.push(i[n])
-                    }
+                for (let jsonItem of jsonArray) {
+                    items.push(...jsonItem)
                 }
                 jsonArray = items
             }
 
             jsonArray = jsonArray.map(item => item[field])
+
+            if (field === fieldList.at(-1)) {
+                jsonArray = jsonArray.sort().filter((item, pos, self) => self.indexOf(item) === pos)
+            }
         });
         return jsonArray;
     } catch (error) {
